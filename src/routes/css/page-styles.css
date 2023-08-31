@@ -33,6 +33,10 @@
 	line-height: 1.3rem;
 }
 
+#app p.subhead {
+	font-family: Shift-Book, Georgia, serif;
+}
+
 #app footer {
 	margin-top: 3rem;
 }
