@@ -1,33 +1,42 @@
 <script>
     // import { csv } from "d3-fetch";
     import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
+    // import { get } from 'svelte/store';
 
+    import Chart from './components/chart/Chart.svelte';
     import Combobox from './components/combobox/Combobox.svelte';
 
     
     // VARIABLES
-    let data, promise, value;
+    let data = [];
+    let response, value;
+
+    // COMBOBOX
     const comboboxOptions = [
     	{ text: "Abbotsford", value: "abbotsford" },
     	{ text: "Vancouver", value: "vancouver" }
   	]
 
-    const testFile = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/misc/test-data-02.csv';
+    // FETCH
+    const url = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 
+  
     // REACTIVE VARS
-
+    // $: <some var>
 
     // FUNCTIONS
-    function init() {
-        console.log('INIT!')
-        
+    async function init() {
         // get data
-        promise = fetch(testFile)
-            .then(resolvedData => {
-                console.log(resolvedData)
-                data = resolvedData;
-            });
+        try {
+            await fetch(url)
+                .then(response => response.json())
+                .then(resolveData => {
+                    // PROCESS DATA HERE
+                    data = resolveData;
+                })
+        } catch(err) {
+            console.log(`Error: ${err}`)
+        }
     }
 
     onMount(init);
@@ -47,13 +56,19 @@
     placeholder='Pick a city...'
     options={comboboxOptions}
 />
-<pre class="status">Selected: {value || ''}</pre>
+<pre class="status">CBOX value: {value || ''}</pre>
 
-{#await promise}
-    <h2>Loading...</h2>
-{:then resolvedData}
-    <pre>{`Resolved data: ${JSON.stringify(data)}`}</pre>
+
+
+<!-- FETCH DATA -->
+{#await response}
+    <h3>Loading data...</h3>
+{:then resolveData}
+    {console.log(data)}
+    <Chart data={data} value={value} />
 {/await}
+
+
 
 
 <footer>

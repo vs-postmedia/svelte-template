@@ -1,5 +1,7 @@
 <script>
+    export let data = [];
     export let value = '';
 </script>
 
-<pre class="status">Selected: {value}</pre>
+<pre>{`CHART: Resolved data = ${JSON.stringify(data)}`}</pre>
+<pre>CHART: Combobox value = {value || 'No selection'}</pre>
