@@ -1,15 +1,15 @@
 <script>
     // COMPONENTS
     import { onMount } from 'svelte';
+    import { csvParse } from 'd3-dsv';
     import Example from "$components/Example.svelte";
     import Chart from "$components/Chart.svelte";
     import Select from "svelte-select"; // https://github.com/rob-balfre/svelte-select
 
     // DATA
-    import data from "$data/data.js";
+    // import data from "$data/data.js";
     import { menuItems } from "$data/menu-items";
     const dataUrl = '';
-    console.log(data);
 
     // VARIABLES
     let data, value;
