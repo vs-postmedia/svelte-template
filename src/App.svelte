@@ -76,13 +76,13 @@
     @import '$css/colors.css';
     @import '$css/app.css';
 
-    #header {
+    header {
 		margin-bottom: 2rem;
 	}
-	#header > h1 {
+	header > h1 {
 		text-align: center;
 	}
-	#header .subhead {
+	header .subhead {
 		margin: 0 auto;
 		max-width: 525px;
 		text-align: center;
