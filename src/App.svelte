@@ -2,14 +2,13 @@
     // COMPONENTS
     import { onMount } from 'svelte';
     import { csvParse } from 'd3-dsv';
-    import Example from "$components/Example.svelte";
     import Chart from "$components/Chart.svelte";
     import Select from "svelte-select"; // https://github.com/rob-balfre/svelte-select
 
     // DATA
     // import data from "$data/data.js";
     import { menuItems } from "$data/menu-items";
-    const dataUrl = '';
+    const dataUrl = 'https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/2024/challenge03/data.csv';
 
     // VARIABLES
     let data, value;
@@ -32,11 +31,9 @@
     }
 
     async function init() {
-        console.log("INIT!");
-
         // fetch remote data
-        // data = await fetchData(dataUrl);
-        // console.log(data)
+        data = await fetchData(dataUrl);
+        // console.log(data);
 
         // default display selector value
 		value = defaultSelectValue;
