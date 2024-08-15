@@ -1,5 +1,6 @@
 <script>
     export let videoElement
+    
     // VIDEO
     const videoPath = import.meta.env.MODE === 'production' ? './video' : '/video';
     const videoUrlMp4 = `${videoPath}/video.mp4`;
