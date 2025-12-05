@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import { csvParse } from 'd3-dsv';
     import Chart from "$components/Chart.svelte";
+    import Map from "$components/Map.svelte";
     import Select from "svelte-select"; // https://github.com/rob-balfre/svelte-select
 
     
@@ -11,17 +12,23 @@
     // import data from "$data/data.js";
     import { menuItems } from "$data/menu-items";
     const dataUrl = 'https://raw.githubusercontent.com/ajstarks/dubois-data-portraits/master/challenge/2024/challenge03/data.csv';
+    const mapDataUrl = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/misc/mobi-top-bike-data.csv';
 
     // VARIABLES
-    let data, value;
+    let data, mapData, value;
     const defaultSelectValue = menuItems[0].value;
+    
+    // create .env in root dir & add VITE_MAPTILER_API_KEY for Map.svelte
+    const apiKey = import.meta.env.VITE_MAPTILER_API_KEY;
+
 
     // REACTIVE VARIABLES
     $: value, updateData(value);
 
     async function fetchData(url) {
         const resp = await fetch(url);
-        data = await resp.text();
+        const data = await resp.text();
+
         return csvParse(data);
     }
 
@@ -35,10 +42,14 @@
     async function init() {
         // fetch remote data
         data = await fetchData(dataUrl);
-        // console.log(data);
 
+        // fetch map data
+        mapData = await fetchData(mapDataUrl);
+        
         // default display selector value
 		value = defaultSelectValue;
+
+        console.log(mapData)
     }
 
     onMount(init);
@@ -62,6 +73,12 @@
         data={data}
         value={value}
     />
+    {#if mapData}
+        <Map
+            apiKey={apiKey}
+            data={mapData}
+        />
+    {/if}
 </main>
 
 <footer>
