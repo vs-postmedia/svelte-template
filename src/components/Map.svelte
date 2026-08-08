@@ -1,5 +1,5 @@
 <script>
-    import { onMount, onDestroy } from 'svelte';
+    import { onMount, onDestroy, mount } from 'svelte';
     import Maplibregl from 'maplibre-gl';
     import 'maplibre-gl/dist/maplibre-gl.css';
     import MapTooltip from './MapTooltip.svelte';
@@ -187,7 +187,7 @@
             const popupContainer = document.createElement('div');
 
             // Mount the tooltip
-            new MapTooltip({
+            mount(MapTooltip, {
                 target: popupContainer,
                 props: {
                     stationName: station_name,
