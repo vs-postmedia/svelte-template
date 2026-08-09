@@ -1,6 +1,5 @@
 <script>
-    export let stationName;
-    export let visits;
+    let { stationName, visits } = $props();
 </script>
 
 <div class="popup-content">

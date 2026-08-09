@@ -1,6 +1,6 @@
 <script>
-    export let videoElement
-    
+    let { videoElement = $bindable() } = $props();
+
     // VIDEO
     const videoPath = import.meta.env.MODE === 'production' ? './video' : '/video';
     const videoUrlMp4 = `${videoPath}/video.mp4`;

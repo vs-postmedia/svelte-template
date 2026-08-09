@@ -1,17 +1,15 @@
 <script>
-    export let data = [];
-    export let value = '';
-
-    // LIBS
     import { onMount } from 'svelte';
 
     // COMPONENTS
     import Tooltip from '$components/Tooltip.svelte';
 
+    let { data = [], value = '' } = $props();
+
     // VARS
-    let tooltipData;
-    let width = 500;
-    let height = 500;
+    let tooltipData = $state();
+    let width = $state(500);
+    let height = $state(500);
 
     const margin = {
 		top: 20,
@@ -19,7 +17,10 @@
 		bottom: 20,
 		left: 20 
 	};
-    $: console.log(data);
+
+    $effect(() => {
+        console.log(data);
+    });
 
     // FUNCTIONS
     function init() {

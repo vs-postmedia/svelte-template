@@ -4,29 +4,28 @@
     import 'maplibre-gl/dist/maplibre-gl.css';
     import MapTooltip from './MapTooltip.svelte';
     import Helper from '../lib/helper-functions.js';
-    
-    export let data = [];
-    export let apiKey;
-    
-    
-    
-    let map;
-    let mapContainer;
-    let animationFrame;
-    let currentIndex = 0;
-    let isPlaying = false;
-    let stationVisitCounts = {};
-    
-    const stationSize = 4
+
+    let { data = [], apiKey } = $props();
+
+    let map = $state();
+    let mapContainer = $state();
+    let animationFrame = $state();
+    let currentIndex = $state(0);
+    let isPlaying = $state(false);
+    let stationVisitCounts = $state({});
+
+    const stationSize = 4;
     const currentStationSize = 6;
     const lineColour = '#AFBEDB';
     const stationColour = '#0062A3';
     const currentStationColour = '#9B3F86';
     const STATION_SIZE_INCREMENT = 0.25;
     const TIME_BETWEEN_STATIONS = 35;  // in milliseconds
-    const MAP_STYLE = `https://api.maptiler.com/maps/dataviz/style.json?key=${apiKey}`;
+    const MAP_STYLE = $derived(`https://api.maptiler.com/maps/dataviz/style.json?key=${apiKey}`);
 
-    $: console.log(data)
+    $effect(() => {
+        console.log(data);
+    });
 
     // $: {
     //     // Debug: Find entries with invalid coordinates
@@ -47,12 +46,12 @@
     //     }
     // }
     // Calculate map center from stations
-    $: mapCenter = data.length > 0 
+    let mapCenter = $derived(data.length > 0
         ? [
             data.reduce((sum, d) => sum + Number(d.lon), 0) / data.length,
             data.reduce((sum, d) => sum + Number(d.lat), 0) / data.length
         ]
-        : [-123.12, 49.27];
+        : [-123.12, 49.27]);
 
     onMount(() => {
         map = new Maplibregl.Map({
@@ -365,14 +364,14 @@
         <p class="info">Trips: {Helper.numberWithCommas(currentIndex)}</p>
     </div>
     <div class="controls">
-        <button on:click={togglePlay} class="btn">
+        <button onclick={togglePlay} class="btn">
             {#if isPlaying}
                 ⏸ Pause
             {:else}
                 ▶ Play
             {/if}
         </button>
-        <button on:click={reset} class="btn">
+        <button onclick={reset} class="btn">
             ↻ Restart
         </button>
         <!-- <button on:click={pausePlay} class="btn">

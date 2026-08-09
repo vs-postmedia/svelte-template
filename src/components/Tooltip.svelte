@@ -1,10 +1,8 @@
 <script>
-    // PROPERTIES
-    export let data;
-    export let width;
+    let { data, width } = $props();
 
     // VARS
-    let tooltipWidth;
+    let tooltipWidth = $state();
     const xNudge = 5;
     const yNudge = 5;
 
@@ -14,10 +12,7 @@
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-
-    // DYNAMIC VARS
-    $: xPosition = data.x + tooltipWidth + xNudge > width ? data.x - tooltipWidth - xNudge : data.x + xNudge; // don't let the tooltip run off the right of the screen
-    $: console.log(data)
+    let xPosition = $derived((data?.x ?? 0) + (tooltipWidth ?? 0) + xNudge > width ? (data?.x ?? 0) - (tooltipWidth ?? 0) - xNudge : (data?.x ?? 0) + xNudge);
 </script>
 
 

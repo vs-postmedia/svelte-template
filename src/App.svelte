@@ -6,8 +6,6 @@
     import Map from "$components/Map.svelte";
     import Select from "svelte-select"; // https://github.com/rob-balfre/svelte-select
 
-    
-
     // DATA
     // import data from "$data/data.js";
     import { menuItems } from "$data/menu-items";
@@ -15,15 +13,13 @@
     const mapDataUrl = 'https://vs-postmedia-data.sfo2.digitaloceanspaces.com/misc/mobi-top-bike-data.csv';
 
     // VARIABLES
-    let data, mapData, value;
+    let data = $state();
+    let mapData = $state();
+    let value = $state();
     const defaultSelectValue = menuItems[0].value;
-    
+
     // create .env in root dir & add VITE_MAPTILER_API_KEY for Map.svelte
     const apiKey = import.meta.env.VITE_MAPTILER_API_KEY;
-
-
-    // REACTIVE VARIABLES
-    $: value, updateData(value);
 
     async function fetchData(url) {
         const resp = await fetch(url);
@@ -32,11 +28,11 @@
         return csvParse(data);
     }
 
+    function updateData(nextValue) {
+        if (!nextValue || !nextValue.value) return;
 
-    function updateData(value) {
-        if (!value || !value.value) return;
-
-        console.log(value);
+        value = nextValue;
+        console.log(nextValue);
     }
 
     async function init() {
@@ -45,11 +41,11 @@
 
         // fetch map data
         mapData = await fetchData(mapDataUrl);
-        
-        // default display selector value
-		value = defaultSelectValue;
 
-        console.log(mapData)
+        // default display selector value
+        value = defaultSelectValue;
+
+        console.log(mapData);
     }
 
     onMount(init);
